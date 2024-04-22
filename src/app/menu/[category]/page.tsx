@@ -1,19 +1,31 @@
 import { ProductType } from "@/types/types";
+import { prisma } from "@/utils/connect";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const getData = async (category:string)=>{
-  const res = await fetch(`http://localhost:3000/api/products?cat=${category}`,{
-    cache:"no-store"
-  })
+  // const res = await fetch(process.env.API_URL + `/api/products?cat=${category}`,{
+  //   cache:"no-store"
+  // })
 
-  if(!res.ok){
-    throw new Error("Failed!");
+  // if(!res.ok){
+  //   throw new Error("Failed!");
     
-  }
+  // }
 
-  return res.json()
+  // return res.json()
+  // const products = await prisma.product.findMany({
+  //   where: {
+  //     ...(cat ? { catSlug: cat } : { isFeatured: true }),
+  //   },
+  // });
+  const products:any[] =  await prisma.product.findMany({
+    where: {
+      ...(category ? { catSlug: category } : { isFeatured: true }),
+    },
+  });
+  return products;
 }
 
 type Props = {
@@ -46,3 +58,5 @@ const CategoryPage = async ({params}:Props) => {
 };
 
 export default CategoryPage;
+
+

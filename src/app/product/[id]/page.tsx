@@ -1,19 +1,26 @@
 import DeleteButton from "@/components/DeleteButton";
 import Price from "@/components/Price";
 import { ProductType } from "@/types/types";
+import { prisma } from "@/utils/connect";
 import Image from "next/image";
 import React from "react";
 
 const getData = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/products/${id}`, {
-    cache: "no-store",
+  // const res = await fetch(process.env.API_URL + `/api/products/${id}`, {
+  //   cache: "no-store",
+  // });
+
+  // if (!res.ok) {
+  //   throw new Error("Failed!");
+  // }
+
+  // return res.json();
+  const product: any = await prisma.product.findUnique({
+    where: {
+      id: id,
+    },
   });
-
-  if (!res.ok) {
-    throw new Error("Failed!");
-  }
-
-  return res.json();
+  return product;
 };
 
 const SingleProductPage = async ({ params }: { params: { id: string } }) => {
@@ -53,3 +60,5 @@ const SingleProductPage = async ({ params }: { params: { id: string } }) => {
 };
 
 export default SingleProductPage;
+
+

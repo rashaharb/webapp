@@ -1,18 +1,22 @@
 import { MenuType } from "@/types/types";
+import { prisma } from "@/utils/connect";
 import Link from "next/link";
 import React from "react";
 
 const getData = async ()=>{
-  const res = await fetch("http://localhost:3000/api/categories",{
-    cache:"no-store"
-  })
+  // const res = await fetch("http://localhost:3000/api/categories",{
+  //   cache:"no-store"
+  // })
 
-  if(!res.ok){
-    throw new Error("Failed!");
+  // if(!res.ok){
+  //   throw new Error("Failed!");
     
-  }
+  // }
 
-  return res.json()
+  // return res.json()
+
+  const categories = await prisma.category.findMany();
+    return categories;
 }
 
 const MenuPage = async () => {
@@ -40,3 +44,4 @@ const MenuPage = async () => {
 };
 
 export default MenuPage;
+
